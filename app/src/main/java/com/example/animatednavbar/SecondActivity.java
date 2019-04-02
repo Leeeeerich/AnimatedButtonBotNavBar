@@ -18,6 +18,7 @@ public class SecondActivity extends AppCompatActivity {
 
     private ViewGroup sceneRoot;
     private int defaultWidthButton = 0;
+    private int defaultSizeBottomSheet = 0;
     private int widthButton;
     private View activeButton;
 
@@ -30,6 +31,7 @@ public class SecondActivity extends AppCompatActivity {
         sceneRoot = findViewById(R.id.rootScene);
 
         widthButton = (int) getResources().getDisplayMetrics().density * 200;
+
 
         findViewById(R.id.llFirstButton).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,12 +57,14 @@ public class SecondActivity extends AppCompatActivity {
         findViewById(R.id.parentRootScene).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int defaultSize = (int) getResources().getDisplayMetrics().density * 90;
+                if(defaultSizeBottomSheet == 0) defaultSizeBottomSheet = v.getBottom() - v.getTop();
+
+
                 if (isOpenedBottomSheet) {
-                    parentBottomNavigation(v, defaultSize, 0);
+                    parentBottomNavigation(v, defaultSizeBottomSheet, 0);
                     isOpenedBottomSheet = false;
                 } else {
-                    parentBottomNavigation(v, 340, 180);
+                    parentBottomNavigation(v, (int) getResources().getDisplayMetrics().density * 340, 180);
                     isOpenedBottomSheet = true;
                 }
             }
@@ -81,7 +85,7 @@ public class SecondActivity extends AppCompatActivity {
         ObjectAnimator.ofFloat(bt, View.ROTATION, rotate).setDuration(500).start();
 
         ViewGroup.LayoutParams paramsScene = v.getLayoutParams();
-        paramsScene.height = (int) getResources().getDisplayMetrics().density * size;
+        paramsScene.height = size;
 
         TransitionManager.beginDelayedTransition((ViewGroup) v, transitionSet);
 
